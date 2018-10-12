@@ -1,4 +1,6 @@
 <?php
+
+/*Use of Uber API*/
 $initial = curl_init();
 
 curl_setopt($initial, CURLOPT_URL, "https://api.uber.com/v1.2/estimates/price?start_latitude=12.9165757&start_longitude=77.6101163&end_latitude=12.9614709&end_longitude=77.5746009");
