@@ -1,15 +1,4 @@
-<html>
-  <head>
-    <style>      
-    #placemap 
-      {
-        height: 50%;
-        width: 30%;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="placemap"></div>
+
 <?php
 function googleapi($url) 
 {
@@ -41,37 +30,83 @@ function googleapi($url)
 
 	
 
-	$resdir=array();
-	$resdir=json_decode($response_directions,true);
+	//$resdir=array();
+	//$resdir=json_decode($response_directions,true);
 	//print_r($resdir);
-	$temp=$resdir['routes'];
+	/*$temp=$resdir['routes'];
 	$t=$temp[0];
 	$a=$t['bounds'];
 	$b=$a['northeast'];
 	$lat=$b['lat'];
 	$long=$b['lng'];
 	echo $lat;
-	echo $long;
+	echo $long;*/
+
 
 	//$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=1500&type=bus_station&keyword=cruise&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
-	$resplace=array();
-	$resplace=json_decode($response_places,true);
-	print_r($resplace);
+	//$resplace=array();
+	//$resplace=json_decode($response_places,true);
+	//print_r($resplace);
 
+	$response_lat=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$sourcename."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	$responselat=array();
+	$responselat=json_decode($response_lat,true);
+	//print_r($responselat);
+	$r=$responselat['results'];
+	$s=$r['0'];
+	$m=$s['geometry'];
+	$n=$m['location'];
+	$smr=$n['lat'];
+	$nys=$n['lng'];
+	print($smr);
+	print($nys);
+
+	$response_lng=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$destname."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	$responselng=array();
+	$responselng=json_decode($response_lng,true);
+	//print_r($responselat);
+	$ra=$responselng['results'];
+	$sa=$ra['0'];
+	$ma=$sa['geometry'];
+	$na=$ma['location'];
+	$smra=$na['lat'];
+	$nysa=$na['lng'];
+	print($smra);
+	print($nysa);
 
 ?>
+<html>
+  <head>
+    <style>      
+    #placemap 
+      {
+        height: 50%;
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="placemap"></div>
+    <select id="start">
+    	
+    	<option value="<?php echo $source; ?>"><?php echo $source; ?></option>
+    </select>
+    <select id="end">
+    	<option value="<?php echo $dest; ?>"><?php echo $dest; ?></option>
+    </select>
+
 <script type="text/javascript">
 	
       function initMap() {
         var map = new google.maps.Map(document.getElementById('placemap'), {
-          zoom: 3,
-          center: {lat: , lng: },
+          zoom: 12,
+          center: {lat:12.9716 , lng:77.5946 },
           mapTypeId: 'terrain'
         });
 
         var points = [
-          {lat: , lng: },
-          {lat: , lng: }
+          {lat:<?php echo $smr; ?> , lng: <?php echo $nys; ?>},
+          {lat:<?php echo $smra; ?> , lng: <?php echo $nysa; ?> }
         ];
         var pathway = new google.maps.Polyline({
           path: points,
@@ -82,9 +117,8 @@ function googleapi($url)
         });
 
         pathway.setMap(map);
-      }
+      } 
 </script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek&callback=initMap">
-    </script>
+    
+
 
