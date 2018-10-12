@@ -71,8 +71,61 @@ function googleapi($url)
 	$na=$ma['location'];
 	$smra=$na['lat'];
 	$nysa=$na['lng'];
-	print($smra);
-	print($nysa);
+	//print($smra);
+	//print($nysa);
+
+$ubXL;
+$pool;
+$ubGo;
+$ubPre;
+$dist;
+$time;
+
+function ubfare($src_latitude,$src_longitude,$dest_latitude,$dest_longitude)
+	{
+$initial = curl_init();
+$url="https://api.uber.com/v1.2/estimates/price?start_latitude=".$src_latitude."&start_longitude=".$src_longitude."&end_latitude=".$dest_latitude."&end_longitude=".$dest_longitude;
+curl_setopt($initial, CURLOPT_URL, $url);
+curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($initial, CURLOPT_CUSTOMREQUEST, "GET");
+$res = array();
+$res[] = "Authorization: Token 5ay12-tO8WAJY9HZB0IDyYZfe3EPhf6J7cL6KfLB";
+$res[] = "Accept-Language: en_US";
+$res[] = "Content-Type: application/json";
+curl_setopt($initial, CURLOPT_HTTPHEADER, $res);
+$res = curl_exec($initial);
+if (curl_errno($initial)) {
+    echo 'Error:' . curl_error($initial);
+}
+curl_close ($initial);
+$result = array();
+$result = json_decode($res,true);
+//print_r($result['prices']);
+$dist=$result['prices'][0]['distance'];
+$time=round(($result['prices'][0]['duration'])/60.0);
+echo $dist."\n";
+echo $time."\n";
+$i=0;
+while ($result['prices'][$i] != NULL) 
+{	if($result['prices'][$i]['display_name']=='Pool')
+		$pool=$result['prices'][$i]['estimate'];
+	else if($result['prices'][$i]['display_name']=='UberGo')
+		$ubGo=$result['prices'][$i]['estimate'];
+	else if($result['prices'][$i]['display_name']=='UberXL')
+		$ubXL=$result['prices'][$i]['estimate'];
+	else if($result['prices'][$i]['display_name']=='Premier')
+		$ubPre=$result['prices'][$i]['estimate'];
+	$i++;
+}
+echo $pool."\n";
+echo $ubGo."\n";
+echo $ubXL."\n";
+echo $ubPre."\n";
+}
+
+ubfare($smr,$nys,$smra,$nysa);
+
+
 
 ?>
 <html>
@@ -87,38 +140,45 @@ function googleapi($url)
   </head>
   <body>
     <div id="placemap"></div>
-    <select id="start">
-    	
-    	<option value="<?php echo $source; ?>"><?php echo $source; ?></option>
-    </select>
-    <select id="end">
-    	<option value="<?php echo $dest; ?>"><?php echo $dest; ?></option>
+     <select id="mode">
+      <option value="DRIVING">Driving</option>
+      <option value="WALKING">Walking</option>
     </select>
 
 <script type="text/javascript">
-	
-      function initMap() {
+       function initMap() {
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsService = new google.maps.DirectionsService;
         var map = new google.maps.Map(document.getElementById('placemap'), {
-          zoom: 12,
-          center: {lat:12.9716 , lng:77.5946 },
-          mapTypeId: 'terrain'
+          zoom: 14,
+          center: {lat: 12.9716, lng: 77.5946}
         });
+        directionsDisplay.setMap(map);
 
-        var points = [
-          {lat:<?php echo $smr; ?> , lng: <?php echo $nys; ?>},
-          {lat:<?php echo $smra; ?> , lng: <?php echo $nysa; ?> }
-        ];
-        var pathway = new google.maps.Polyline({
-          path: points,
-          geodesic: true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 2
+        maproute(directionsService, directionsDisplay);
+        document.getElementById('mode').addEventListener('change', function() {
+          maproute(directionsService, directionsDisplay);
         });
+      }
 
-        pathway.setMap(map);
-      } 
+      function maproute(directionsService, directionsDisplay) {
+        var selectedMode = document.getElementById('mode').value;
+        directionsService.route({
+          origin: {lat: <?php echo $smr; ?> , lng: <?php echo $nys; ?>},  
+          destination: {lat: <?php echo $smra; ?> , lng: <?php echo $nysa; ?>},  
+          travelMode: google.maps.TravelMode[selectedMode]
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek&callback=initMap">
+    </script>
 </script>
-    
-
 
