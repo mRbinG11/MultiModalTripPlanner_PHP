@@ -1,4 +1,5 @@
 
+
 <?php
 function googleapi($url) 
 {
@@ -58,8 +59,8 @@ function googleapi($url)
 	$n=$m['location'];
 	$smr=$n['lat'];
 	$nys=$n['lng'];
-	print($smr);
-	print($nys);
+	//print($smr);
+	//print($nys);
 
 	$response_lng=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$destname."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
 	$responselng=array();
@@ -105,8 +106,10 @@ $dist=$result['prices'][0]['distance'];
 $time=round(($result['prices'][0]['duration'])/60.0);
 echo $dist."\n";
 echo $time."\n";
+//file_put_contents("dm.txt", $dist);
 $i=0;
-while ($result['prices'][$i] != NULL) 
+$num = count($result['prices']);
+while ($i<$num) 
 {	if($result['prices'][$i]['display_name']=='Pool')
 		$pool=$result['prices'][$i]['estimate'];
 	else if($result['prices'][$i]['display_name']=='UberGo')
@@ -123,27 +126,104 @@ echo $ubXL."\n";
 echo $ubPre."\n";
 }
 
-ubfare($smr,$nys,$smra,$nysa);
+$srclat=file_get_contents("demofile.txt");
+$srclong=file_get_contents("demo.txt");
 
+ubfare($srclat,$srclong,$smr,$nys);
 
-
+$destlat=12.9716;
+$destlong=77.5946;
+ubfare($smra,$nysa,$destlat,$destlong);
 ?>
+
 <html>
   <head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  
+  	<title> Black Hats</title>
     <style>      
-    #placemap 
-      {
+    .butt
+	{
+		background-color: #555555;
+    	color: white;
+    	padding: 15px 32px;
+    	text-align: center;
+    	font-size: 15px;
+    	margin: 4px 2px;
+    	cursor: pointer;
+	}
+    #placemap
+    {
         height: 50%;
         width: 30%;
-      }
+        margin-left: 450px;
+    }
+    #mode
+    {
+    	margin-left: 450px;
+    }
     </style>
   </head>
   <body>
+  
     <div id="placemap"></div>
-     <select id="mode">
+       <select id="mode">
       <option value="DRIVING">Driving</option>
       <option value="WALKING">Walking</option>
+      <br><br>
     </select>
+    <body>
+		<table style="width:100%">
+  		<tr>
+    		<th>CAB</th>
+    		<th>BUS</th> 
+    		<th>CAR</th>
+  		</tr>
+  		<tr>
+    		<td  align="center">
+				<form action="" method="POST" >
+ 				<br><br><br>
+   				<button type="submit" class="btn btn-outline-success cab" value="cab">Book</button>
+				</form>
+			</td>		
+       		<td  align="center"><form action="" >
+           	<br><br><br>
+            <input type="button" name="bus" class="butt" value="Book">
+        	</form>
+        	</td> 
+      		<td  align="center">
+			<form action="mapsapi.php" method="POST" >
+ 			<br><br><br>
+   			<input type="button" name="cab2" class="butt" value="Book">
+		</form>
+			</td>
+     	</tr>
+	</table>
+</body>
+
+
+<script type="text/javascript">
+	var e="<?php echo file_get_contents("dm.txt"); ?>";
+	if(e<1.5)
+	{
+		jQuery(".cab").attr("disabled",true);
+	}
+	else
+	{
+		jQuery(".cab").show();
+	}
+</script>
 
 <script type="text/javascript">
        function initMap() {
@@ -176,9 +256,9 @@ ubfare($smr,$nys,$smra,$nysa);
         });
       }
 
-    </script>
-    <script async defer
+
+
+  </script>
+    <script async defer 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek&callback=initMap">
     </script>
-</script>
-
