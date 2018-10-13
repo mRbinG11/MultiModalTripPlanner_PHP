@@ -20,6 +20,20 @@ h1 {
       
          
        }
+
+       	.butt
+{
+
+     background-color: black;
+   
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 20px;
+    margin: 3px 2px;
+    cursor: pointer;
+
+}
       
 
        
@@ -42,9 +56,9 @@ h1 {
 		<h1>Password<br>
 		
 		<input type="password" name="password" placeholder="Enter Password" required ><br><br></h1><br>
-       <input type="button" class="butt" value="Submit"></h1>
+      <h1> <input type="button" class="butt" value="Submit"></h1>
 
- 
+
 
 		
 	</form>
