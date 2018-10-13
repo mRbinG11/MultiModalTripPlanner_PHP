@@ -1,16 +1,151 @@
 <html>
-<title>Test</title>
+<head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<title>BLACK HATS</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+
+h1{
+	background-color:#D3D3D3;
+	text-align: center;
+	font-size: 30px;
+	font-style: oblique;
+}
+#sr{
+	
+  font-size: 30px;
+    border: 2px solid #98FB98;
+    color: #D3D3D3;
+    
+}
+#ds{
+	font-size: 30px;
+	border: 2px solid #FFCC11;
+}
+.butt
+{
+
+     background-color: #555555;
+    
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+
+}
+body
+{
+  background-color: #D3D3D3;
+	background-image: url("image/trns.gif");
+	background-repeat: no-repeat;
+	background-position: bottom;
+	 font-family: "Lato", sans-serif;
+  
+}
+
+.sbar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 50px;
+}
+
+.sbar a {
+    padding: 7px 7px 7px 31px;
+    text-decoration: none;
+    font-size: 24px;
+    color: #D3D3D3;
+    display: block;
+    transition: 0.4s;
+}
+
+.sbar a:hover {
+    color: #696969;
+}
+
+.sbar .clsbtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 35px;
+    margin-left: 50px;
+}
+
+.obtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #000000;
+    color: white;
+    padding: 10px 16px;
+    
+}
+
+.obtn:hover {
+    background-color: #696969;
+}
+
+#min {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+#frm{
+	margin-left: 800px;
+}
+#busrc{
+    margin-left: 300px;
+}
+#sb{
+    margin-left: 280px;
+}
+
+}
+
+	</style>
+	<body><h1><b>BLACK HATS<img  id="black" src="image\black.jpg" alt="blckhat" height="50px" weight="50px" align="middle" ></b></h1>
+	<div id="Sbar" class="sbar">
+  <a href="javascript:void(0)" class="clsbtn" onclick="closeNav()">×</a>
+  <a href="#">Account Details</a>
+  <a href="#">Wallet</a>
+  <a href="#">Restaurants near by</a>
+</div>
+<div id="min">
+  <button class="obtn" onclick="openNav()">☰ </button>
+  <div class="container-fluid">
+<div id ="frm">
+
 <form action="maps.php" method="POST">
-	<p>Source:<input type="text" name="source">
-	Destination:<input type="text" name="destination"></p>
-	<input type="submit" name="submit">
+	Source:<br>
+	<input type="text" name="source"><br>
+	Destination:<br>
+	<input type="text" name="destination"></p>
+	<input type="submit" class="butt" name="submit">
+</div>
 	<div id="displaymap"> </div>
 </form>
-<form method="GET" action="maps.php">
+<div id="busrc">
+<form method="POST" action="mapsapi.php">
+	Start Point:
 	<input type="text" id="bussource" name="bussource">
-	<input type="text" id="busdest" name="busdest">
-	<input type="submit" name="submit2">
+	Destination:
+	<input type="text" id="busdest" name="busdest"><br><br>
+	<input type="submit" id="sb" name="submit2">
+
 </form>
+</div>
+</div>
+</div>
 </html>
 
 <script type="text/javascript">
@@ -39,9 +174,19 @@
     }
 
 })();
+function openNav() {
+    document.getElementById("Sbar").style.width = "250px";
+    document.getElementById("min").style.marginLeft = "250px";
+}
+
+function closeNav() {
+    document.getElementById("Sbar").style.width = "0";
+    document.getElementById("min").style.marginLeft= "0";
+}
 </script>
 
 <?php
+	error_reporting(0);
 	$dbName = "hackathon";
 	$dbUsername = "root";
 	$dbPassword= '';
@@ -53,15 +198,14 @@
 	$source=$_POST['source'];
 	$destination=$_POST['destination'];
 
-	$sourcename=$_GET['bussource'];
-	$dest=$_GET['busdest'];
-
-	$destname=urlencode($dest);
+	
 	
 	$sql="SELECT * FROM stopdata WHERE source REGEXP '$source' and destination REGEXP '$destination'";
 	$query=mysqli_query($dbconnect,$sql);
 
-	echo "<table id='datatable'>";
+	echo "<table id='datatable' border='2px solid black'>";
+    echo "<tr><td><b>Bus Number</b></td><td><b>Start Date</b></td><td><b>Destination</b></td></tr>";
+
 
 	while($row = mysqli_fetch_assoc($query))
 	{   
@@ -69,36 +213,19 @@
 	}
 
 	echo "</table>";
-function googleapi($url) 
-{
-	$options=array(
-		CURLOPT_RETURNTRANSFER => true,			//returns webpage
-		CURLOPT_HEADER => false,				//no headers to return
-		CURLOPT_FOLLOWLOCATION => true,			//follow redirects
-		CURLOPT_MAXREDIRS => 10,				//stop after 10 redirects
-		CURLOPT_ENCODING => "",					//handle compressed
-		CURLOPT_USERAGENT => "test",			//name of client
-		CURLOPT_AUTOREFERER => true,			//set referrer on redirect
-		CURLOPT_CONNECTTIMEOUT => 120,			//time out on connect
-		CURLOPT_TIMEOUT => 120,					//time out on response
-	);
-
-	$ch=curl_init($url);
-	curl_setopt_array($ch, $options);
-	$content=curl_exec($ch);
-	curl_close($ch);
-	return $content;
-
-}
-$response_directions = googleapi("https://maps.googleapis.com/maps/api/directions/json?origin='.$sourcename.'&destination='.$destname.'&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
-//$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
-
-$resdir=array();
-$resdir=json_decode($response_directions,true);
-print_r($resdir);
-
-
-
 
 ?>
+<script type="text/javascript">
+	jQuery("#datatable").hide();
+    jQuery("#busrc").hide();
+	jQuery(".butt").click(function(event) {
+		event.preventDefault();
+        jQuery("#frm").hide();
+		jQuery("#datatable").show();
+        jQuery("#busrc").show();
+
+	});
+
+
+</script>
 

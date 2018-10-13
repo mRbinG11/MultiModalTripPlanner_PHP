@@ -104,8 +104,6 @@ $result = json_decode($res,true);
 //print_r($result['prices']);
 $dist=$result['prices'][0]['distance'];
 $time=round(($result['prices'][0]['duration'])/60.0);
-echo $dist."\n";
-echo $time."\n";
 //file_put_contents("dm.txt", $dist);
 $i=0;
 $num = count($result['prices']);
@@ -120,16 +118,22 @@ while ($i<$num)
 		$ubPre=$result['prices'][$i]['estimate'];
 	$i++;
 }
-echo $pool."\n";
-echo $ubGo."\n";
-echo $ubXL."\n";
-echo $ubPre."\n";
+//	echo $pool."\n";
+//	echo $ubGo."\n";
+//	echo $ubXL."\n";
+//	echo $ubPre."\n";
+	file_put_contents("go.txt", $pool);
+	file_put_contents("ub.txt", $ubGo);
+	file_put_contents("xl.txt", $ubXL);
+	file_put_contents("pre.txt", $ubPre);
+	file_put_contents("time.txt", $time);
+	file_put_contents("dist.txt", $dist);
 }
 
 $srclat=file_get_contents("demofile.txt");
 $srclong=file_get_contents("demo.txt");
 
-ubfare($srclat,$srclong,$smr,$nys);
+//ubfare($srclat,$srclong,$smr,$nys);
 
 $destlat=12.9716;
 $destlong=77.5946;
@@ -173,6 +177,75 @@ ubfare($smra,$nysa,$destlat,$destlong);
     {
     	margin-left: 450px;
     }
+
+    .rad {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.rad input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+td:hover
+{
+	background-color: #808080;
+}
+
+.chck {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 150%;
+}
+
+.rad:hover input ~ .chck{
+    background-color: 	#000000;
+}
+
+
+.rad input:checked ~ .chck {
+    background-color: 	black;
+}
+
+
+.chck:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+.rad input:checked ~ .chck:after {
+    display: block;
+}
+
+
+.rad .chck:after {
+ 	top: 7px;
+	left: 7px;
+	width: 5px;
+	height: 5px;
+	border-radius: 30%;
+	background: white;
+}
+
+#dis
+{
+	font-size: 18px;
+}
     </style>
   </head>
   <body>
@@ -184,19 +257,42 @@ ubfare($smra,$nysa,$destlat,$destlong);
       <br><br>
     </select>
     <body>
-		<table style="width:100%">
+		<table style="width:100%" border="2px;">
   		<tr>
-    		<th>CAB</th>
-    		<th>BUS</th> 
-    		<th>CAR</th>
+    		<th align="center">CAB</th>
+    		<th align="center">BUS</th> 
+    		<th >CAR</th>
   		</tr>
   		<tr>
-    		<td  align="center">
+  			<div id="frm">												
+    			<td  align="center">
 				<form action="" method="POST" >
- 				<br><br><br>
+ 				<br>
+ 				<div id="dis">
+ 				Time taken:<?php echo file_get_contents("time.txt"); ?> Mins <br>
+ 				Distance:<?php echo file_get_contents("dist.txt");?> Km<br></div>
+ 				<br>
+ 				<label class="rad">Pool: <?php echo file_get_contents("go.txt");?>
+  				<input type="radio" checked="checked" name="radio">
+  				<span class="chck"></span>
+				</label>
+				<label class="rad">UberGo: <?php echo file_get_contents("go.txt");?>
+  				<input type="radio" name="radio">
+  				<span class="chck"></span>
+				</label>
+				<label class="rad">UberXL: <?php echo file_get_contents("xl.txt");?>
+  				<input type="radio" name="radio">
+  				<span class="chck"></span>
+				</label>
+				<label class="rad">UberPremier: <?php echo file_get_contents("pre.txt");?>
+ 				<input type="radio" name="radio">
+  				<span class="chck"></span>
+				</label>
+				</html>
    				<button type="submit" class="btn btn-outline-success cab" value="cab">Book</button>
 				</form>
 			</td>		
+		</div>
        		<td  align="center"><form action="" >
            	<br><br><br>
             <input type="button" name="bus" class="butt" value="Book">
@@ -217,11 +313,11 @@ ubfare($smra,$nysa,$destlat,$destlong);
 	var e="<?php echo file_get_contents("dm.txt"); ?>";
 	if(e<1.5)
 	{
-		jQuery(".cab").attr("disabled",true);
+		jQuery("#frm").attr("disabled",true);
 	}
 	else
 	{
-		jQuery(".cab").show();
+		jQuery("#frm").show();
 	}
 </script>
 
