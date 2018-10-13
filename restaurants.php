@@ -28,7 +28,6 @@
 	$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=15000&type=restaurant&keyword=cruise&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
 	$resplace=array();
 	$resplace=json_decode($response_places,true);
-	print_r($resplace);
 	$num = count($resplace['results']);
 	$i=0;
 	$loc_lat = array();
@@ -47,25 +46,27 @@
 	$south_lng[$i] = $resplace['results'][$i]['geometry']['viewport']['southwest']['lng'];
 	$i++;
     }
-
-	//print_r($resplace['results'][1]['geometry']['viewport']['southwest']['lng']);
-	print_r($south_lat);
+    $response=googleapi("https://maps.googleapis.com/maps/api/geocode/json?latlng=".$south_lat[0].",".$south_lng[0]."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+    $resarr=array();
+    $resarr=json_decode($response,true);
+    $x=$resarr['results']['0']['formatted_address'];
 ?>
 
 <!DOCTYPE html>
 <html>
-<body>
-
-<h1>My First Google Map</h1>
+<body bgcolor="orange">
+<title>Restaurants</title>
+<h1>Restaurants</h1>
 
 <div id="googleMap" style="width:100%;height:400px;"></div>
+<p><?php echo $x; ?> </p>
 
 <script>
 function myMap() {
   var myCenter = new google.maps.LatLng(<?php echo $south_lat[0]; ?>,<?php echo $south_lng[0]; ?>);
 
   var mapCanvas = document.getElementById("googleMap");
-  var mapOptions = {center: myCenter, zoom: 5};
+  var mapOptions = {center: myCenter, zoom: 12};
   var map = new google.maps.Map(mapCanvas, mapOptions);
   var marker = new google.maps.Marker({position:myCenter});
   marker.setMap(map);

@@ -1,5 +1,4 @@
 
-
 <?php
 function googleapi($url) 
 {
@@ -75,15 +74,23 @@ function googleapi($url)
 	//print($smra);
 	//print($nysa);
 
-$ubXL;
-$pool;
-$ubGo;
-$ubPre;
-$dist;
-$time;
+$ubXL=0;
+$pool=0;
+$ubGo=0;
+$ubPre=0;
+$dist=0;
+$time=0;
+
+$ubXL1=0;
+$pool1=0;
+$ubGo1=0;
+$ubPre1=0;
+$dist1=0;
+$time1=0;
+
 
 function ubfare($src_latitude,$src_longitude,$dest_latitude,$dest_longitude)
-	{
+{
 $initial = curl_init();
 $url="https://api.uber.com/v1.2/estimates/price?start_latitude=".$src_latitude."&start_longitude=".$src_longitude."&end_latitude=".$dest_latitude."&end_longitude=".$dest_longitude;
 curl_setopt($initial, CURLOPT_URL, $url);
@@ -118,10 +125,6 @@ while ($i<$num)
 		$ubPre=$result['prices'][$i]['estimate'];
 	$i++;
 }
-//	echo $pool."\n";
-//	echo $ubGo."\n";
-//	echo $ubXL."\n";
-//	echo $ubPre."\n";
 	file_put_contents("go.txt", $pool);
 	file_put_contents("ub.txt", $ubGo);
 	file_put_contents("xl.txt", $ubXL);
@@ -129,11 +132,10 @@ while ($i<$num)
 	file_put_contents("time.txt", $time);
 	file_put_contents("dist.txt", $dist);
 }
-
 $srclat=file_get_contents("demofile.txt");
 $srclong=file_get_contents("demo.txt");
 
-//ubfare($srclat,$srclong,$smr,$nys);
+//ubfare1($srclat,$srclong,$smr,$nys);
 
 $destlat=12.9716;
 $destlong=77.5946;
@@ -155,7 +157,7 @@ ubfare($smra,$nysa,$destlat,$destlong);
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   
-  	<title> Black Hats</title>
+  	<title>Multimodal Booking</title>
     <style>      
     .butt
 	{
@@ -198,7 +200,7 @@ ubfare($smra,$nysa,$destlat,$destlong);
 }
 td:hover
 {
-	background-color: #808080;
+	background-color: #D3D3D3;
 }
 
 .chck {
@@ -247,6 +249,7 @@ td:hover
 	font-size: 18px;
 }
     </style>
+    <h1 align="center"><b><hr>Smart Transit<hr></b></h1>
   </head>
   <body>
   
@@ -259,13 +262,13 @@ td:hover
     <body>
 		<table style="width:100%" border="2px;">
   		<tr>
-    		<th align="center">CAB</th>
+    		<th align="center">CAB/WALK</th>
     		<th align="center">BUS</th> 
-    		<th >CAR</th>
+    		<th >CAB/WALK</th>
   		</tr>
   		<tr>
   			<div id="frm">												
-    			<td  align="center">
+    			<td >
 				<form action="" method="POST" >
  				<br>
  				<div id="dis">
@@ -289,19 +292,113 @@ td:hover
   				<span class="chck"></span>
 				</label>
 				</html>
-   				<button type="submit" class="btn btn-outline-success cab" value="cab">Book</button>
+   				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Book</button>
+   				<!-- Modal -->
+  				<div class="modal fade" id="myModal" role="dialog">
+    			<div class="modal-dialog">
+    
+    		  	<!-- Modal content-->
+      			<div class="modal-content">
+        		<div class="modal-header">
+          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+          		<h4 class="modal-title"></h4>
+        		</div>
+        		<div class="modal-body">
+          		<p>Pool: <?php echo file_get_contents("go.txt");?><br>
+				UberGo: <?php echo file_get_contents("go.txt");?><br>
+				UberXL: <?php echo file_get_contents("xl.txt");?><br>
+				UberPremier: <?php echo file_get_contents("pre.txt");?></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
 				</form>
 			</td>		
 		</div>
        		<td  align="center"><form action="" >
-           	<br><br><br>
-            <input type="button" name="bus" class="butt" value="Book">
+           	<br><br><b>Starting Bus Station:<?php echo $source; ?><br><br>
+           	Destination Station: <?php echo $dest;?></b><br><br>
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#busmodal">Book</button>
+   				<!-- Modal -->
+  				<div class="modal fade" id="busmodal" role="dialog">
+    			<div class="modal-dialog">
+    
+    		  	<!-- Modal content-->
+      			<div class="modal-content">
+        		<div class="modal-header">
+          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+          		<h4 class="modal-title"></h4>
+        		</div>
+        		<div class="modal-body">
+          		<p>Starting Bus Station:<?php echo $source; ?><br>
+				Destination Station: <?php echo $dest;?><br>
+				</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
         	</form>
         	</td> 
       		<td  align="center">
 			<form action="mapsapi.php" method="POST" >
  			<br><br><br>
-   			<input type="button" name="cab2" class="butt" value="Book">
+  				Time taken:<?php echo file_get_contents("time.txt"); ?> Mins <br>
+ 				Distance:<?php echo file_get_contents("dist.txt");?> Km<br></div>
+ 				<br>
+ 				<label class="rad">Pool: <?php echo file_get_contents("go.txt");?>
+  				<input type="radio" checked="checked" name="radio">
+  				<span class="chck"></span>
+				</label>
+				<label class="rad">UberGo: <?php echo file_get_contents("go.txt");?>
+  				<input type="radio" name="radio">
+  				<span class="chck"></span>
+				</label>
+				<label class="rad">UberXL: <?php echo file_get_contents("xl.txt");?>
+  				<input type="radio" name="radio">
+  				<span class="chck"></span>
+				</label>
+				<label class="rad">UberPremier: <?php echo file_get_contents("pre.txt");?>
+ 				<input type="radio" name="radio">
+  				<span class="chck"></span>
+				</label>
+   			 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#cabmodal">Book</button>
+   				<!-- Modal -->
+  				<div class="modal fade" id="cabmodal" role="dialog">
+    			<div class="modal-dialog">
+    
+    		  	<!-- Modal content-->
+      			<div class="modal-content">
+        		<div class="modal-header">
+          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+          		<h4 class="modal-title"></h4>
+        		</div>
+        		<div class="modal-body">
+          		<p>Pool: <?php echo file_get_contents("go.txt");?><br>
+				UberGo: <?php echo file_get_contents("go.txt");?><br>
+				UberXL: <?php echo file_get_contents("xl.txt");?><br>
+				UberPremier: <?php echo file_get_contents("pre.txt");?></p>
+				</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 		</form>
 			</td>
      	</tr>

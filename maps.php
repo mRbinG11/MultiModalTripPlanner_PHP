@@ -3,12 +3,15 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-	<title>BLACK HATS</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Transit</title>	
 </head>
 <style>
 
-h1{
+
+
+
+h1
+{
 	background-color:#D3D3D3;
 	text-align: center;
 	font-size: 30px;
@@ -43,7 +46,7 @@ body
   background-color: #D3D3D3;
 	background-image: url("image/trns.gif");
 	background-repeat: no-repeat;
-	background-position: bottom;
+	background-position: top;
 	 font-family: "Lato", sans-serif;
   
 }
@@ -104,27 +107,37 @@ body
 	margin-left: 800px;
 }
 #busrc{
-    margin-left: 300px;
+    margin-left: 600px;
+    margin-top: 200px;
+    position: absolute;
+
 }
 #sb{
     margin-left: 280px;
 }
-
+#datatable
+{
+	margin-top: 110px;
+	position: relative;
 }
 
 	</style>
-	<body><h1><b>BLACK HATS<img  id="black" src="image\black.jpg" alt="blckhat" height="50px" weight="50px" align="middle" ></b></h1>
+	<body><h1><b>Smart Transit</b></h1>
 	<div id="Sbar" class="sbar">
   <a href="javascript:void(0)" class="clsbtn" onclick="closeNav()">×</a>
   <a href="#">Account Details</a>
   <a href="#">Wallet</a>
-  <a href="#">Restaurants near by</a>
+  <a href="restaurants.php">Restaurants near by</a>
 </div>
 <div id="min">
   <button class="obtn" onclick="openNav()">☰ </button>
   <div class="container-fluid">
 <div id ="frm">
-
+<br>
+<br>
+<br>
+<br>
+<br>
 <form action="maps.php" method="POST">
 	Source:<br>
 	<input type="text" name="source"><br>
