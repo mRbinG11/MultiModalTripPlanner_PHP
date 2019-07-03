@@ -25,7 +25,7 @@
 
 }
 
-	$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=15000&type=restaurant&keyword=cruise&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=15000&type=restaurant&keyword=cruise&key=KEY");
 	$resplace=array();
 	$resplace=json_decode($response_places,true);
 	$num = count($resplace['results']);
@@ -46,7 +46,7 @@
 	$south_lng[$i] = $resplace['results'][$i]['geometry']['viewport']['southwest']['lng'];
 	$i++;
     }
-    $response=googleapi("https://maps.googleapis.com/maps/api/geocode/json?latlng=".$south_lat[0].",".$south_lng[0]."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+    $response=googleapi("https://maps.googleapis.com/maps/api/geocode/json?latlng=".$south_lat[0].",".$south_lng[0]."&key=KEY");
     $resarr=array();
     $resarr=json_decode($response,true);
     $x=$resarr['results']['0']['formatted_address'];
@@ -73,7 +73,7 @@ function myMap() {
 }
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=KEY"></script>
 
 </body>
 </html>
