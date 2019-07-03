@@ -26,7 +26,7 @@ function googleapi($url)
 	$dest=$_POST['busdest'];
 	$destname=urlencode($dest);
 	$sourcename=urlencode($source);
-	//$response_directions = googleapi("https://maps.googleapis.com/maps/api/directions/json?origin=".$sourcename."&destination=".$destname."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	//$response_directions = googleapi("https://maps.googleapis.com/maps/api/directions/json?origin=".$sourcename."&destination=".$destname."&key=KEY");
 
 	
 
@@ -43,12 +43,12 @@ function googleapi($url)
 	echo $long;*/
 
 
-	//$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=1500&type=bus_station&keyword=cruise&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	//$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=1500&type=bus_station&keyword=cruise&key=KEY");
 	//$resplace=array();
 	//$resplace=json_decode($response_places,true);
 	//print_r($resplace);
 
-	$response_lat=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$sourcename."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	$response_lat=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$sourcename."&key=KEY");
 	$responselat=array();
 	$responselat=json_decode($response_lat,true);
 	//print_r($responselat);
@@ -61,7 +61,7 @@ function googleapi($url)
 	//print($smr);
 	//print($nys);
 
-	$response_lng=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$destname."&key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek");
+	$response_lng=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$destname."&key=KEY");
 	$responselng=array();
 	$responselng=json_decode($response_lng,true);
 	//print_r($responselat);
@@ -453,5 +453,5 @@ td:hover
 
   </script>
     <script async defer 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfJA1FX86cFbGxLE9-BnseJXAZ41b8Ek&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=KEY">
     </script>
