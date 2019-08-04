@@ -26,53 +26,24 @@ function googleapi($url)
 	$dest=$_POST['busdest'];
 	$destname=urlencode($dest);
 	$sourcename=urlencode($source);
-	//$response_directions = googleapi("https://maps.googleapis.com/maps/api/directions/json?origin=".$sourcename."&destination=".$destname."&key=KEY");
-
-	
-
-	//$resdir=array();
-	//$resdir=json_decode($response_directions,true);
-	//print_r($resdir);
-	/*$temp=$resdir['routes'];
-	$t=$temp[0];
-	$a=$t['bounds'];
-	$b=$a['northeast'];
-	$lat=$b['lat'];
-	$long=$b['lng'];
-	echo $lat;
-	echo $long;*/
-
-
-	//$response_places=googleapi("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=".$lat.",".$long."&radius=1500&type=bus_station&keyword=cruise&key=KEY");
-	//$resplace=array();
-	//$resplace=json_decode($response_places,true);
-	//print_r($resplace);
-
 	$response_lat=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$sourcename."&key=KEY");
 	$responselat=array();
 	$responselat=json_decode($response_lat,true);
-	//print_r($responselat);
 	$r=$responselat['results'];
 	$s=$r['0'];
 	$m=$s['geometry'];
 	$n=$m['location'];
 	$smr=$n['lat'];
 	$nys=$n['lng'];
-	//print($smr);
-	//print($nys);
-
 	$response_lng=googleapi("https://maps.googleapis.com/maps/api/geocode/json?address=".$destname."&key=KEY");
 	$responselng=array();
 	$responselng=json_decode($response_lng,true);
-	//print_r($responselat);
 	$ra=$responselng['results'];
 	$sa=$ra['0'];
 	$ma=$sa['geometry'];
 	$na=$ma['location'];
 	$smra=$na['lat'];
 	$nysa=$na['lng'];
-	//print($smra);
-	//print($nysa);
 
 $ubXL=0;
 $pool=0;
@@ -108,10 +79,8 @@ if (curl_errno($initial)) {
 curl_close ($initial);
 $result = array();
 $result = json_decode($res,true);
-//print_r($result['prices']);
 $dist=$result['prices'][0]['distance'];
 $time=round(($result['prices'][0]['duration'])/60.0);
-//file_put_contents("dm.txt", $dist);
 $i=0;
 $num = count($result['prices']);
 while ($i<$num) 
@@ -134,8 +103,6 @@ while ($i<$num)
 }
 $srclat=file_get_contents("demofile.txt");
 $srclong=file_get_contents("demo.txt");
-
-//ubfare1($srclat,$srclong,$smr,$nys);
 
 $destlat=12.9716;
 $destlong=77.5946;
